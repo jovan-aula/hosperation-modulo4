@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lluvia de ideas</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(160deg, #081e35 0%, #0C2D4E 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 36px 28px;
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .badge {
+      background: rgba(69,197,190,0.15);
+      border: 1px solid rgba(69,197,190,0.35);
+      border-radius: 100px;
+      padding: 5px 16px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #45C5BE;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.3rem, 5vw, 1.7rem);
+      color: white;
+      line-height: 1.25;
+      font-weight: 400;
+    }
+    .divider { width: 40px; height: 3px; background: #45C5BE; border-radius: 2px; }
+    .hint {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.55;
+    }
+    .fields { display: flex; flex-direction: column; gap: 10px; }
+    .field-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .field-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(69,197,190,0.12);
+      border: 1.5px solid rgba(69,197,190,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #45C5BE;
+    }
+    input[type="text"] {
+      flex: 1;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: white;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="text"]::placeholder { color: rgba(255,255,255,0.25); }
+    input[type="text"]:focus { border-color: #45C5BE; }
+    button {
+      width: 100%;
+      padding: 15px;
+      background: #45C5BE;
+      color: #0C2D4E;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      letter-spacing: 0.03em;
+    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+    .check {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(69,197,190,0.15);
+      border: 2px solid #45C5BE;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .success h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: white; font-weight: 400; }
+    .success p { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="formCard">
+    <div class="badge">Actividad en vivo</div>
+    <h1>Piensa en alguien que admires.</h1>
+    <div class="divider"></div>
+    <p class="hint">¿Qué es lo que admiras de esa persona? Escribe 3 cualidades — una palabra o frase corta.</p>
+
+    <div class="fields">
+      <div class="field-row">
+        <div class="field-num">1</div>
+        <input type="text" id="r1" placeholder="Ej: empatía, paciencia..." maxlength="120" autocomplete="off" />
+      </div>
+      <div class="field-row">
+        <div class="field-num">2</div>
+        <input type="text" id="r2" placeholder="Ej: siempre dispuesto a ayudar..." maxlength="120" autocomplete="off" />
+      </div>
+      <div class="field-row">
+        <div class="field-num">3</div>
+        <input type="text" id="r3" placeholder="Ej: nunca pierde la calma..." maxlength="120" autocomplete="off" />
+      </div>
+    </div>
+
+    <button id="btn" onclick="enviar()">Enviar mis respuestas</button>
+  </div>
+
+  <div class="card success" id="successCard">
+    <div class="check">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#45C5BE" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Enviado</h2>
+    <p>Tus 3 respuestas ya aparecen en pantalla.<br/>Gracias por participar.</p>
+  </div>
+
+  <script>
+    var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxSkf9bUF95VsUK-asDP2z5LhDLlMHGxdMM48ebxxle2IjhZDyiUjY06yXlrOoyc-s/exec";
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") enviar();
+    });
+
+    function enviar() {
+      var r1 = document.getElementById("r1").value.trim();
+      var r2 = document.getElementById("r2").value.trim();
+      var r3 = document.getElementById("r3").value.trim();
+
+      if (!r1 || !r2 || !r3) {
+        // Resalta los vacíos
+        [["r1", r1], ["r2", r2], ["r3", r3]].forEach(function(pair) {
+          var el = document.getElementById(pair[0]);
+          if (!pair[1]) { el.style.borderColor = "rgba(255,120,120,0.7)"; el.focus(); }
+          else { el.style.borderColor = "rgba(255,255,255,0.12)"; }
+        });
+        return;
+      }
+
+      var btn = document.getElementById("btn");
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+
+      var respuestas = [r1, r2, r3];
+      var promesas = respuestas.map(function(texto) {
+        return fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({ tipo: "lluvia", texto: texto, sesion: "colaborador-excelencia" })
+        }).catch(function() {});
+      });
+
+      Promise.allSettled(promesas).then(function() {
+        document.getElementById("formCard").style.display = "none";
+        document.getElementById("successCard").style.display = "flex";
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dinámica — Arma al colaborador · Hospital Florence</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0C2D4E;
+      --teal: #45C5BE;
+      --bg: #EEF2F7;
+      --soft: rgba(12,45,78,0.45);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #bbb;
+      -webkit-font-smoothing: antialiased;
+      color: var(--navy);
+    }
+
+    /* ─── PAGE BASE ─── */
+    .page {
+      width: 216mm;
+      height: 279mm;
+      background: white;
+      margin: 10mm auto;
+      padding: 12mm 14mm 10mm;
+      display: flex;
+      flex-direction: column;
+      page-break-after: always;
+      overflow: hidden;
+    }
+
+    /* ─── HEADER ─── */
+    .hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--teal);
+      padding-bottom: 8px;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .hdr-left { display: flex; flex-direction: column; gap: 2px; }
+    .hdr-mod {
+      font-size: 7.5px; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--teal);
+    }
+    .hdr-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px; font-weight: 400; color: var(--navy);
+    }
+    .eq-pill {
+      background: var(--navy); color: white;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 100px;
+    }
+
+    /* ══════════════════════════════════
+       HOJA A — SILUETA
+    ══════════════════════════════════ */
+    .page-silhouette {
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sil-instruccion {
+      text-align: center;
+      padding: 10px 0 6px;
+      flex-shrink: 0;
+    }
+    .sil-instruccion p {
+      font-size: 9.5px; color: var(--soft); line-height: 1.55;
+    }
+    .sil-instruccion strong { color: var(--navy); font-weight: 700; }
+
+    .sil-zone {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 0;
+    }
+
+    /* Outer decorative rings */
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1.5px dashed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .ring-1 { width: 280px; height: 280px; border-color: rgba(69,197,190,0.2); }
+    .ring-2 { width: 360px; height: 360px; border-color: rgba(12,45,78,0.07); }
+    .ring-3 { width: 430px; height: 430px; border-color: rgba(12,45,78,0.04); }
+
+    .sil-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+    .sil-inner svg { width: 270px; height: auto; display: block; }
+    .sil-name {
+      font-size: 11px; font-weight: 700;
+      color: var(--soft); letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .sil-hint {
+      font-size: 8px; color: rgba(12,45,78,0.2);
+      letter-spacing: 0.06em; font-style: italic;
+    }
+
+    .sil-footer-note {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 8px 0 4px;
+      font-size: 8px; color: rgba(12,45,78,0.2);
+      letter-spacing: 0.05em; text-transform: uppercase;
+      border-top: 1px solid rgba(12,45,78,0.07);
+    }
+
+    /* ══════════════════════════════════
+       HOJA B — CASO + TARJETAS
+    ══════════════════════════════════ */
+    .caso {
+      background: var(--bg);
+      border-radius: 10px;
+      border-left: 3px solid var(--teal);
+      padding: 10px 14px;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .caso-rol {
+      font-size: 7.5px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 3px;
+    }
+    .caso-nombre {
+      font-family: 'DM Serif Display', serif;
+      font-size: 14px; font-weight: 400; color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .caso-texto {
+      font-size: 10px; line-height: 1.65; color: var(--navy);
+    }
+    .caso-texto em { font-style: italic; color: rgba(12,45,78,0.6); }
+    .caso-ref {
+      margin-top: 6px;
+      font-size: 7px; color: rgba(12,45,78,0.3);
+      line-height: 1.4; letter-spacing: 0.03em;
+      border-top: 1px solid rgba(12,45,78,0.08);
+      padding-top: 5px;
+    }
+    .caso-ref strong { font-weight: 600; color: rgba(12,45,78,0.45); }
+
+    /* preguntas */
+    .preguntas {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 10px;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .pitem { display: flex; gap: 7px; align-items: flex-start; }
+    .pnum {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--navy); color: white;
+      font-size: 8px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .ptxt { flex: 1; }
+    .pq { font-size: 8px; font-weight: 700; color: var(--navy); margin-bottom: 4px; line-height: 1.3; }
+    .pline { height: 1px; background: rgba(12,45,78,0.12); margin-bottom: 4px; }
+
+    /* cards section */
+    .cards-sec {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-top: 1.5px dashed rgba(12,45,78,0.15);
+      margin-top: 10px;
+      padding-top: 8px;
+      min-height: 0;
+    }
+    .cards-lbl {
+      font-size: 7px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--soft); text-align: center;
+      margin-bottom: 6px; flex-shrink: 0;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cards-lbl::before, .cards-lbl::after {
+      content: ''; flex: 1; height: 1px; background: rgba(12,45,78,0.1);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(4, auto);
+      gap: 9px;
+      align-content: start;
+    }
+
+    .card {
+      border-radius: 7px;
+      padding: 7px 8px 6px;
+      display: flex; flex-direction: column; gap: 3px;
+      border: 1.2px dashed;
+    }
+    .card.actitud  { border-color: var(--teal); background: rgba(69,197,190,0.07); }
+    .card.aptitud  { border-color: rgba(12,45,78,0.22); background: rgba(12,45,78,0.03); }
+    .card.trampa   { border-color: rgba(190,70,70,0.3); background: rgba(190,70,70,0.04); }
+
+    .ctype {
+      font-size: 7px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .card.actitud .ctype { color: var(--teal); }
+    .card.aptitud .ctype { color: rgba(12,45,78,0.4); }
+    .card.trampa  .ctype { color: rgba(170,55,55,0.7); }
+
+    .ctitle { font-size: 9.5px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+    .cdesc  { font-size: 8px; color: var(--soft); line-height: 1.35; }
+
+    .scissors {
+      flex-shrink: 0;
+      text-align: center;
+      margin-top: 6px;
+      font-size: 7.5px; color: rgba(12,45,78,0.25);
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+
+    /* footer */
+    .pg-footer {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 6px;
+      border-top: 1px solid rgba(12,45,78,0.07);
+      margin-top: 6px;
+    }
+    .pg-footer span { font-size: 7px; color: rgba(12,45,78,0.22); letter-spacing: 0.05em; text-transform: uppercase; }
+    .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+
+    @media print {
+      body { background: white; }
+      .page { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ████████████████████████████████████████
+     EQUIPO 1 — HOJA A: SILUETA (SANDRA)
+████████████████████████████████████████ -->
+<div class="page page-silhouette">
+  <div class="hdr">
+    <div class="hdr-left">
+      <span class="hdr-mod">Hospital Florence · Módulo 4 · Dinámica en equipos</span>
+      <div class="hdr-title">Arma al colaborador ideal</div>
+    </div>
+    <div class="eq-pill">Equipo 1</div>
+  </div>
+
+  <div class="sil-instruccion">
+    <p>Recorten las <strong>8 tarjetas</strong> que eligieron y péguenlas aquí · Coloreen y decoren a Sandra como quieran<br/>Al presentar, expliquen por qué eligieron esas actitudes y aptitudes para su caso</p>
+  </div>
+
+  <div class="sil-zone">
+    <div class="ring ring-3"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-1"></div>
+    <div class="sil-inner">
+      <svg viewBox="0 0 120 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="34" r="24" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="51" y="57" width="18" height="14" rx="5" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="28" y="69" width="64" height="86" rx="16" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="6"  y="72" width="24" height="62" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="90" y="72" width="24" height="62" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="30" y="151" width="26" height="76" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="64" y="151" width="26" height="76" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <path d="M60 113 C58 110 44 102 44 93 C44 87 49 83 54 86 C57 87 59 90 60 92 C61 90 63 87 66 86 C71 83 76 87 76 93 C76 102 62 110 60 113 Z" stroke="#45C5BE" stroke-width="1.5" fill="rgba(69,197,190,0.18)"/>
+        <rect x="55" y="77" width="10" height="3" rx="1.5" fill="#45C5BE" opacity="0.4"/>
+        <rect x="58.5" y="74" width="3" height="9" rx="1.5" fill="#45C5BE" opacity="0.4"/>
+      </svg>
+      <div class="sil-name">Sandra</div>
+      <div class="sil-hint">coloréala · decórala · pega sus tarjetas</div>
+    </div>
+  </div>
+
+  <div class="sil-footer-note">Hospital Florence · Hosperation · Módulo 4 &nbsp;·&nbsp; Equipo 1</div>
+</div>
+
+
+<!-- ████████████████████████████████████████
+     EQUIPO 1 — HOJA B: CASO + TARJETAS
+████████████████████████████████████████ -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-left">
+      <span class="hdr-mod">Hospital Florence · Módulo 4 · Dinámica en equipos</span>
+      <div class="hdr-title">El caso · Tarjetas para recortar</div>
+    </div>
+    <div class="eq-pill">Equipo 1</div>
+  </div>
+
+  <div class="caso">
+    <div class="caso-rol">Recepcionista · Área de admisión</div>
+    <div class="caso-nombre">El caso de Sandra</div>
+    <p class="caso-texto">Un familiar lleva más de seis horas en urgencias sin noticias de su esposa, quien ingresó por una hemorragia. Se acerca a la ventanilla y pregunta con voz temblorosa. Sandra, sin levantar la vista del monitor, responde: <em>"Si algo pasara, le avisamos."</em> Nadie lo orienta, nadie llama internamente para verificar. El hombre termina deambulando por el pasillo hasta que otro paciente le indica hacia dónde ir.</p>
+    <p class="caso-ref"><strong>Fuente:</strong> Basado en queja documentada ante CONAMED, área de admisión hospitalaria (patrón recurrente, 2023-2024). Nombre e institución modificados con fines didácticos.</p>
+  </div>
+
+  <div class="preguntas">
+    <div class="pitem">
+      <div class="pnum">1</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué actitud le faltó a Sandra?</div>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+    <div class="pitem">
+      <div class="pnum">2</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué aptitud era indispensable?</div>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+    <div class="pitem">
+      <div class="pnum">3</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué hubiera dicho el colaborador ideal?</div>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-sec">
+    <div class="cards-lbl">Recorten · elijan 8 · péguenlas en la silueta de Sandra</div>
+    <div class="cards-grid">
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Empatía</div><div class="cdesc">Ponerse en el lugar del otro aunque estés ocupado.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Calidez</div><div class="cdesc">Trato humano y cercano en cada interacción.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Paciencia</div><div class="cdesc">Mantener la calma aunque la situación sea tensa.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Disposición</div><div class="cdesc">Estar con ganas de ayudar, no solo cumplir el proceso.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Humildad</div><div class="cdesc">Reconocer errores sin ponerse a la defensiva.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Autocontrol</div><div class="cdesc">Regular las emociones propias bajo presión.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Respeto</div><div class="cdesc">Tratar con dignidad siempre, sin excepción.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Iniciativa</div><div class="cdesc">Actuar antes de que alguien lo pida.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Comunicación asertiva</div><div class="cdesc">Información clara y oportuna, sin ambigüedad.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Escucha activa</div><div class="cdesc">Atender con atención real, no solo oír.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Conocimiento del servicio</div><div class="cdesc">Saber a quién llamar y cómo orientar al familiar.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Manejo del estrés</div><div class="cdesc">Responder con calidad aunque el entorno sea difícil.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Autocrítica</div><div class="cdesc">Reconocer áreas de mejora de forma honesta.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Trabajo en equipo</div><div class="cdesc">Saber cuándo escalar o pedir apoyo a un compañero.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Proactividad</div><div class="cdesc">Anticiparse a la necesidad antes de que escale.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Gestión del tiempo</div><div class="cdesc">Organizar prioridades en situaciones de alta demanda.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Documentación clínica</div><div class="cdesc">Registrar y comunicar información con precisión.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Resiliencia</div><div class="cdesc">Recuperarse emocionalmente con rapidez tras situaciones difíciles.</div></div>
+    </div>
+    <div class="scissors">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(12,45,78,0.25)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+      Recorten por las líneas punteadas
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <span>Hospital Florence · Hosperation · Módulo 4</span>
+    <div class="dot"></div>
+    <span>20 minutos · presentación 60 seg</span>
+  </div>
+</div>
+
+
+<!-- ████████████████████████████████████████
+     EQUIPO 2 — HOJA A: SILUETA (VERÓNICA)
+████████████████████████████████████████ -->
+<div class="page page-silhouette">
+  <div class="hdr">
+    <div class="hdr-left">
+      <span class="hdr-mod">Hospital Florence · Módulo 4 · Dinámica en equipos</span>
+      <div class="hdr-title">Arma al colaborador ideal</div>
+    </div>
+    <div class="eq-pill">Equipo 2</div>
+  </div>
+
+  <div class="sil-instruccion">
+    <p>Recorten las <strong>8 tarjetas</strong> que eligieron y péguenlas aquí · Coloreen y decoren a Verónica como quieran<br/>Al presentar, expliquen por qué eligieron esas actitudes y aptitudes para su caso</p>
+  </div>
+
+  <div class="sil-zone">
+    <div class="ring ring-3"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-1"></div>
+    <div class="sil-inner">
+      <svg viewBox="0 0 120 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="34" r="24" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="51" y="57" width="18" height="14" rx="5" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="28" y="69" width="64" height="86" rx="16" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="6"  y="72" width="24" height="62" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="90" y="72" width="24" height="62" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="30" y="151" width="26" height="76" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="64" y="151" width="26" height="76" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <path d="M60 113 C58 110 44 102 44 93 C44 87 49 83 54 86 C57 87 59 90 60 92 C61 90 63 87 66 86 C71 83 76 87 76 93 C76 102 62 110 60 113 Z" stroke="#45C5BE" stroke-width="1.5" fill="rgba(69,197,190,0.18)"/>
+        <rect x="55" y="77" width="10" height="3" rx="1.5" fill="#45C5BE" opacity="0.4"/>
+        <rect x="58.5" y="74" width="3" height="9" rx="1.5" fill="#45C5BE" opacity="0.4"/>
+      </svg>
+      <div class="sil-name">Verónica</div>
+      <div class="sil-hint">coloréala · decórala · pega sus tarjetas</div>
+    </div>
+  </div>
+
+  <div class="sil-footer-note">Hospital Florence · Hosperation · Módulo 4 &nbsp;·&nbsp; Equipo 2</div>
+</div>
+
+
+<!-- ████████████████████████████████████████
+     EQUIPO 2 — HOJA B: CASO + TARJETAS
+████████████████████████████████████████ -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-left">
+      <span class="hdr-mod">Hospital Florence · Módulo 4 · Dinámica en equipos</span>
+      <div class="hdr-title">El caso · Tarjetas para recortar</div>
+    </div>
+    <div class="eq-pill">Equipo 2</div>
+  </div>
+
+  <div class="caso">
+    <div class="caso-rol">Enfermera · Piso de hospitalización</div>
+    <div class="caso-nombre">El caso de Verónica</div>
+    <p class="caso-texto">Verónica va con prisa por el pasillo hacia otra habitación. Un familiar que empuja la silla de ruedas de su madre le roza el brazo al cruzarse. Verónica se detiene, se voltea y le dice con tono cortante: <em>"¡Fíjense por dónde van!"</em> La paciente, una mujer de 67 años que va nerviosa a su procedimiento, comienza a llorar en silencio. El familiar se disculpa. Verónica da media vuelta y continúa sin decir nada más. La paciente llega al procedimiento visiblemente angustiada.</p>
+    <p class="caso-ref"><strong>Fuente:</strong> Basado en caso documentado por El Universal / Milenio, Hospital General de Reynosa, Tamaulipas (2026). Nombre e institución modificados con fines didácticos.</p>
+  </div>
+
+  <div class="preguntas">
+    <div class="pitem">
+      <div class="pnum">1</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué actitud le faltó a Verónica?</div>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+    <div class="pitem">
+      <div class="pnum">2</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué aptitud era indispensable?</div>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+    <div class="pitem">
+      <div class="pnum">3</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué hubiera dicho el colaborador ideal?</div>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-sec">
+    <div class="cards-lbl">Recorten · elijan 8 · péguenlas en la silueta de Verónica</div>
+    <div class="cards-grid">
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Empatía</div><div class="cdesc">Ponerse en el lugar del otro aunque estés ocupado.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Calidez</div><div class="cdesc">Trato humano y cercano en cada interacción.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Paciencia</div><div class="cdesc">Mantener la calma aunque la situación sea tensa.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Disposición</div><div class="cdesc">Estar con ganas de ayudar, no solo cumplir el proceso.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Humildad</div><div class="cdesc">Reconocer errores sin ponerse a la defensiva.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Autocontrol</div><div class="cdesc">Regular las emociones propias bajo presión.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Respeto</div><div class="cdesc">Tratar con dignidad siempre, sin excepción.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Iniciativa</div><div class="cdesc">Actuar antes de que alguien lo pida.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Comunicación asertiva</div><div class="cdesc">Información clara y oportuna, sin ambigüedad.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Escucha activa</div><div class="cdesc">Atender con atención real, no solo oír.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Conocimiento del servicio</div><div class="cdesc">Saber a quién llamar y cómo orientar al familiar.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Manejo del estrés</div><div class="cdesc">Responder con calidad aunque el entorno sea difícil.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Autocrítica</div><div class="cdesc">Reconocer áreas de mejora de forma honesta.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Trabajo en equipo</div><div class="cdesc">Saber cuándo escalar o pedir apoyo a un compañero.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Proactividad</div><div class="cdesc">Anticiparse a la necesidad antes de que escale.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Gestión del tiempo</div><div class="cdesc">Organizar prioridades en situaciones de alta demanda.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Documentación clínica</div><div class="cdesc">Registrar y comunicar información con precisión.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Resiliencia</div><div class="cdesc">Recuperarse emocionalmente con rapidez tras situaciones difíciles.</div></div>
+    </div>
+    <div class="scissors">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(12,45,78,0.25)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+      Recorten por las líneas punteadas
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <span>Hospital Florence · Hosperation · Módulo 4</span>
+    <div class="dot"></div>
+    <span>20 minutos · presentación 60 seg</span>
+  </div>
+</div>
+
+
+<!-- ████████████████████████████████████████
+     EQUIPO 3 — HOJA A: SILUETA (MARCO)
+████████████████████████████████████████ -->
+<div class="page page-silhouette">
+  <div class="hdr">
+    <div class="hdr-left">
+      <span class="hdr-mod">Hospital Florence · Módulo 4 · Dinámica en equipos</span>
+      <div class="hdr-title">Arma al colaborador ideal</div>
+    </div>
+    <div class="eq-pill">Equipo 3</div>
+  </div>
+
+  <div class="sil-instruccion">
+    <p>Recorten las <strong>8 tarjetas</strong> que eligieron y péguenlas aquí · Coloreen y decoren a Marco como quieran<br/>Al presentar, expliquen por qué eligieron esas actitudes y aptitudes para su caso</p>
+  </div>
+
+  <div class="sil-zone">
+    <div class="ring ring-3"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-1"></div>
+    <div class="sil-inner">
+      <svg viewBox="0 0 120 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="34" r="24" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="51" y="57" width="18" height="14" rx="5" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="28" y="69" width="64" height="86" rx="16" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="6"  y="72" width="24" height="62" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="90" y="72" width="24" height="62" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="30" y="151" width="26" height="76" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <rect x="64" y="151" width="26" height="76" rx="11" stroke="#0C2D4E" stroke-width="1.6" fill="rgba(69,197,190,0.06)"/>
+        <path d="M60 113 C58 110 44 102 44 93 C44 87 49 83 54 86 C57 87 59 90 60 92 C61 90 63 87 66 86 C71 83 76 87 76 93 C76 102 62 110 60 113 Z" stroke="#45C5BE" stroke-width="1.5" fill="rgba(69,197,190,0.18)"/>
+        <rect x="55" y="77" width="10" height="3" rx="1.5" fill="#45C5BE" opacity="0.4"/>
+        <rect x="58.5" y="74" width="3" height="9" rx="1.5" fill="#45C5BE" opacity="0.4"/>
+      </svg>
+      <div class="sil-name">Marco</div>
+      <div class="sil-hint">coloréalo · decóralo · pega sus tarjetas</div>
+    </div>
+  </div>
+
+  <div class="sil-footer-note">Hospital Florence · Hosperation · Módulo 4 &nbsp;·&nbsp; Equipo 3</div>
+</div>
+
+
+<!-- ████████████████████████████████████████
+     EQUIPO 3 — HOJA B: CASO + TARJETAS
+████████████████████████████████████████ -->
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-left">
+      <span class="hdr-mod">Hospital Florence · Módulo 4 · Dinámica en equipos</span>
+      <div class="hdr-title">El caso · Tarjetas para recortar</div>
+    </div>
+    <div class="eq-pill">Equipo 3</div>
+  </div>
+
+  <div class="caso">
+    <div class="caso-rol">Auxiliar de enfermería · Área de triage</div>
+    <div class="caso-nombre">El caso de Marco</div>
+    <p class="caso-texto">Una mujer de 34 años llega a urgencias con dolor abdominal intenso. Marco le toma signos vitales sin presentarse ni explicar qué está haciendo. Al terminar le dice: <em>"Siéntese, cuando haya lugar la pasan."</em> Dos horas después la mujer regresa con el dolor más fuerte, ya casi no puede caminar. Marco responde sin voltear a verla: <em>"Ya la tenemos en lista, espere."</em> Nunca actualiza al médico de guardia. La paciente es atendida hasta que otro familiar insiste en hablar directamente con el médico.</p>
+    <p class="caso-ref"><strong>Fuente:</strong> Basado en patrón documentado por CONAMED en su Informe de Quejas en Servicios de Urgencias 2023-2024. Nombre e institución modificados con fines didácticos.</p>
+  </div>
+
+  <div class="preguntas">
+    <div class="pitem">
+      <div class="pnum">1</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué actitud le faltó a Marco?</div>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+    <div class="pitem">
+      <div class="pnum">2</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué aptitud era indispensable?</div>
+        <div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+    <div class="pitem">
+      <div class="pnum">3</div>
+      <div class="ptxt">
+        <div class="pq">¿Qué hubiera dicho el colaborador ideal?</div>
+        <div class="pline"></div><div class="pline"></div><div class="pline"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-sec">
+    <div class="cards-lbl">Recorten · elijan 8 · péguenlas en la silueta de Marco</div>
+    <div class="cards-grid">
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Empatía</div><div class="cdesc">Ponerse en el lugar del otro aunque estés ocupado.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Calidez</div><div class="cdesc">Trato humano y cercano en cada interacción.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Paciencia</div><div class="cdesc">Mantener la calma aunque la situación sea tensa.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Disposición</div><div class="cdesc">Estar con ganas de ayudar, no solo cumplir el proceso.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Humildad</div><div class="cdesc">Reconocer errores sin ponerse a la defensiva.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Autocontrol</div><div class="cdesc">Regular las emociones propias bajo presión.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Respeto</div><div class="cdesc">Tratar con dignidad siempre, sin excepción.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Iniciativa</div><div class="cdesc">Actuar antes de que alguien lo pida.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Comunicación asertiva</div><div class="cdesc">Información clara y oportuna, sin ambigüedad.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Escucha activa</div><div class="cdesc">Atender con atención real, no solo oír.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Conocimiento del servicio</div><div class="cdesc">Saber a quién llamar y cómo orientar al familiar.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Manejo del estrés</div><div class="cdesc">Responder con calidad aunque el entorno sea difícil.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Autocrítica</div><div class="cdesc">Reconocer áreas de mejora de forma honesta.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Trabajo en equipo</div><div class="cdesc">Saber cuándo escalar o pedir apoyo a un compañero.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Proactividad</div><div class="cdesc">Anticiparse a la necesidad antes de que escale.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Gestión del tiempo</div><div class="cdesc">Organizar prioridades en situaciones de alta demanda.</div></div>
+      <div class="card aptitud"><span class="ctype">Aptitud</span><div class="ctitle">Documentación clínica</div><div class="cdesc">Registrar y comunicar información con precisión.</div></div>
+      <div class="card actitud"><span class="ctype">Actitud</span><div class="ctitle">Resiliencia</div><div class="cdesc">Recuperarse emocionalmente con rapidez tras situaciones difíciles.</div></div>
+    </div>
+    <div class="scissors">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(12,45,78,0.25)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+      Recorten por las líneas punteadas
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <span>Hospital Florence · Hosperation · Módulo 4</span>
+    <div class="dot"></div>
+    <span>20 minutos · presentación 60 seg</span>
+  </div>
+</div>
+
+</body>
+</html>
