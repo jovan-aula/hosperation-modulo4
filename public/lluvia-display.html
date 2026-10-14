@@ -145,18 +145,19 @@
     ];
     var tamanos = ["0.85rem","1rem","1.15rem","1.3rem","1.5rem"];
 
-    var mostradas = {};
+    var mostradas = new Set();
 
     function limpiar() {
-      mostradas = {};
+      mostradas = new Set();
       var nube = document.getElementById("nube");
       nube.innerHTML = '<div id="waiting"><div class="pulse"></div><p>Esperando respuestas...</p></div>';
       document.getElementById("count").textContent = "0 respuestas";
     }
 
-    function agregarPalabra(texto) {
-      if (mostradas[texto]) return;
-      mostradas[texto] = true;
+    function agregarPalabra(texto, nombre, idx) {
+      var key = idx !== undefined ? String(idx) : texto;
+      if (mostradas.has(key)) return;
+      mostradas.add(key);
 
       var waiting = document.getElementById("waiting");
       if (waiting) waiting.remove();
@@ -172,7 +173,12 @@
       el.style.background = color.bg;
       el.style.border = "1.5px solid " + color.border;
       el.style.color = color.text;
-      el.textContent = texto;
+
+      if (nombre) {
+        el.innerHTML = texto + '<span style="display:block;font-size:0.62em;opacity:0.55;font-weight:400;margin-top:2px;">de ' + nombre + '</span>';
+      } else {
+        el.textContent = texto;
+      }
 
       nube.appendChild(el);
       nube.scrollTop = nube.scrollHeight;
@@ -184,8 +190,8 @@
         .then(function(palabras) {
           palabras
             .filter(function(p) { return !p.sesion || p.sesion === SESION; })
-            .forEach(function(p) { agregarPalabra(p.texto); });
-          var total = Object.keys(mostradas).length;
+            .forEach(function(p, idx) { agregarPalabra(p.texto, p.nombre, idx); });
+          var total = mostradas.size;
           document.getElementById("count").textContent = total + (total === 1 ? " respuesta" : " respuestas");
         })
         .catch(function() {});
