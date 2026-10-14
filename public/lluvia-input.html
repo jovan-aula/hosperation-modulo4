@@ -54,6 +54,9 @@
       color: rgba(255,255,255,0.4);
       line-height: 1.55;
     }
+    .name-field-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .name-label { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.55); }
+    .opt { font-weight: 400; color: rgba(255,255,255,0.3); font-style: italic; }
     .fields { display: flex; flex-direction: column; gap: 10px; }
     .field-row {
       display: flex;
@@ -128,6 +131,11 @@
     <div class="divider"></div>
     <p class="hint">¿Qué es lo que admiras de esa persona? Escribe 3 cualidades — una palabra o frase corta.</p>
 
+    <div class="name-field-wrap">
+      <label class="name-label">¿Cómo se llama? <span class="opt">(opcional)</span></label>
+      <input type="text" id="nombre" placeholder="Ej: Mi mamá, María, mi jefa..." maxlength="60" autocomplete="off" style="width:100%;" />
+    </div>
+
     <div class="fields">
       <div class="field-row">
         <div class="field-num">1</div>
@@ -182,11 +190,12 @@
       btn.disabled = true;
       btn.textContent = "Enviando...";
 
+      var nombre = document.getElementById("nombre").value.trim();
       var respuestas = [r1, r2, r3];
       var promesas = respuestas.map(function(texto) {
         return fetch(SCRIPT_URL, {
           method: "POST",
-          body: JSON.stringify({ tipo: "lluvia", texto: texto, sesion: "colaborador-excelencia" })
+          body: JSON.stringify({ tipo: "lluvia", texto: texto, sesion: "colaborador-excelencia", nombre: nombre })
         }).catch(function() {});
       });
 
