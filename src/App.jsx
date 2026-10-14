@@ -24,8 +24,6 @@ import S10_VocacionServicio from './slides/S10_VocacionServicio'
 import S10b_VocacionEjemplos from './slides/S10b_VocacionEjemplos'
 import S10c_PuenteAptitudes from './slides/S10c_PuenteAptitudes'
 import S11_AptitudesExcelencia from './slides/S11_AptitudesExcelencia'
-import S11b_TiposAptitud from './slides/S11b_TiposAptitud'
-import S11c_PersonalServicio from './slides/S11c_PersonalServicio'
 import S12_ComunicacionAsertiva from './slides/S12_ComunicacionAsertiva'
 import S13a_PacienteContexto from './slides/S13a_PacienteContexto'
 import S13_PacienteVulnerable from './slides/S13_PacienteVulnerable'
@@ -68,10 +66,8 @@ const slides = [
 
   // ── APTITUDES ─────────────────────────────
   S10c_PuenteAptitudes,  // 16
-  S11_AptitudesExcelencia, // 17
-  S11b_TiposAptitud,       // 18
-  S11c_PersonalServicio,   // 19
-  S12_ComunicacionAsertiva, // 20
+  S11_AptitudesExcelencia, // 18
+  S12_ComunicacionAsertiva, // 19
 
   // ── EL PACIENTE ───────────────────────────
   S13a_PacienteContexto, // 19
