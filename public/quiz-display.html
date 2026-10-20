@@ -478,11 +478,12 @@
       fetch(SCRIPT_URL + "?tipo=quiz-registros&sesion=" + encodeURIComponent(SESION))
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          if (!data || !Array.isArray(data.registros)) return;
+          if (!data || !Array.isArray(data)) return;
           registros = { azul: [], verde: [], naranja: [] };
-          data.registros.forEach(function(r) {
-            if (registros[r.equipo] !== undefined) {
-              registros[r.equipo].push(r.nombre || "—");
+          data.forEach(function(r) {
+            var eq = (r.equipo || "").toLowerCase();
+            if (registros[eq] !== undefined) {
+              registros[eq].push(r.nombre || "—");
             }
           });
           renderRegistros();
@@ -494,8 +495,8 @@
       fetch(SCRIPT_URL + "?tipo=quiz-votos&sesion=" + encodeURIComponent(SESION))
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          if (!data || !Array.isArray(data.votos)) return;
-          actualizarVotos(data.votos);
+          if (!data || !Array.isArray(data)) return;
+          actualizarVotos(data);
         })
         .catch(function() {});
     }
