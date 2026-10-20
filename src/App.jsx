@@ -18,13 +18,13 @@ import S07f_ActitudComponentes from './slides/S07f_ActitudComponentes'
 import S08a_PerfilesIntro from './slides/S08a_PerfilesIntro'
 import S08_PerfilesColaborador from './slides/S08_PerfilesColaborador'
 import S08c_PerfilExcelencia from './slides/S08c_PerfilExcelencia'
-import S09a_ActitudesIntro from './slides/S09a_ActitudesIntro'
 import S09_ActitudesExcelencia from './slides/S09_ActitudesExcelencia'
 import S10_VocacionServicio from './slides/S10_VocacionServicio'
 import S10b_VocacionEjemplos from './slides/S10b_VocacionEjemplos'
 import S10c_PuenteAptitudes from './slides/S10c_PuenteAptitudes'
 import S11_AptitudesExcelencia from './slides/S11_AptitudesExcelencia'
 import S12_ComunicacionAsertiva from './slides/S12_ComunicacionAsertiva'
+import S12b_EjesComunicacion from './slides/S12b_EjesComunicacion'
 import S13a_PacienteContexto from './slides/S13a_PacienteContexto'
 import S13_PacienteVulnerable from './slides/S13_PacienteVulnerable'
 import S14_MicroComportamientos from './slides/S14_MicroComportamientos'
@@ -60,15 +60,15 @@ const slides = [
   S08c_PerfilExcelencia, // 11
 
   // ── ACTITUDES ─────────────────────────────
-  S09a_ActitudesIntro,   // 12
-  S09_ActitudesExcelencia, // 13
-  S10_VocacionServicio,  // 14
-  S10b_VocacionEjemplos, // 15
+  S10_VocacionServicio,    // vocación como raíz
+  S10b_VocacionEjemplos,   // ejemplos vocación
+  S09_ActitudesExcelencia, // las 10 actitudes
 
   // ── APTITUDES ─────────────────────────────
   S10c_PuenteAptitudes,  // 16
   S11_AptitudesExcelencia, // 18
-  S12_ComunicacionAsertiva, // 19
+  S12_ComunicacionAsertiva, // comunicación asertiva
+  S12b_EjesComunicacion,   // 3 ejes: verbal, paraverbal, no verbal
 
   // ── EL PACIENTE ───────────────────────────
   S13a_PacienteContexto, // 19

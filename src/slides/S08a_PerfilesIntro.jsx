@@ -28,7 +28,7 @@ export default function S08a_PerfilesIntro() {
       }} />
 
       <div style={{
-        maxWidth: 760, width: '100%', zIndex: 1,
+        maxWidth: 820, width: '100%', zIndex: 1,
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         gap: '2rem', textAlign: 'center',
       }}>
@@ -36,33 +36,57 @@ export default function S08a_PerfilesIntro() {
           fontSize: '0.72rem', fontWeight: 700, color: '#45C5BE',
           letterSpacing: '0.13em', textTransform: 'uppercase',
         }}>
-          Los perfiles del colaborador
+          Hasta aquí hablamos de cada una por separado
         </motion.span>
 
-        <motion.h2 {...fade(0.25)} style={{
-          fontFamily: 'DM Serif Display, serif',
-          fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
-          fontWeight: 400, color: 'white',
-          lineHeight: 1.15, margin: 0,
+        {/* Ecuación visual */}
+        <motion.div {...fade(0.2)} style={{
+          display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center',
         }}>
-          En un mismo hospital conviven{' '}
-          <span style={{ color: '#45C5BE' }}>cuatro tipos</span>{' '}
-          de colaborador.
-        </motion.h2>
+          {[
+            { label: 'Actitud', sub: 'cómo te presentas', color: '#45C5BE' },
+            { label: '+', sub: null, color: 'rgba(255,255,255,0.25)' },
+            { label: 'Aptitud', sub: 'lo que sabes hacer', color: 'rgba(255,255,255,0.55)' },
+          ].map(function(item, i) {
+            if (item.label === '+') return (
+              <span key={i} style={{ fontSize: '2.5rem', color: item.color, fontWeight: 300 }}>+</span>
+            )
+            return (
+              <div key={i} style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.35rem',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 14, padding: '1rem 1.75rem',
+              }}>
+                <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: item.color, fontWeight: 400 }}>{item.label}</span>
+                {item.sub && <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.05em' }}>{item.sub}</span>}
+              </div>
+            )
+          })}
+        </motion.div>
 
         <motion.div
           initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.45 }}
           style={{ width: 48, height: 3, background: '#45C5BE', borderRadius: 2 }}
         />
 
-        <motion.p {...fade(0.65)} style={{
-          fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
-          color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, margin: 0, maxWidth: 560,
+        <motion.h2 {...fade(0.55)} style={{
+          fontFamily: 'DM Serif Display, serif',
+          fontSize: 'clamp(1.8rem, 3.8vw, 3rem)',
+          fontWeight: 400, color: 'white',
+          lineHeight: 1.2, margin: 0,
         }}>
-          No todos los que cumplen con su trabajo generan la misma experiencia.
-          La diferencia no siempre está en el conocimiento — está en la combinación
-          de actitud y aptitud con la que cada uno decide presentarse.
+          Dependiendo de cuánto tienes de cada una,
+          obtienes{' '}
+          <span style={{ color: '#45C5BE', fontStyle: 'italic' }}>cuatro perfiles distintos.</span>
+        </motion.h2>
+
+        <motion.p {...fade(0.75)} style={{
+          fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)',
+          color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, margin: 0, maxWidth: 560,
+        }}>
+          En un mismo hospital puedes encontrar los cuatro — a veces en la misma área.
         </motion.p>
       </div>
     </div>

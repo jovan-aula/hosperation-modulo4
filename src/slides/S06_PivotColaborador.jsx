@@ -8,80 +8,55 @@ const fade = (delay = 0) => ({
 
 export default function S06_PivotColaborador() {
   return (
-    <div style={{ width: '100vw', height: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr', overflow: 'hidden' }}>
-      {/* Left Panel — Light */}
-      <div style={{
-        background: '#EEF2F7',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: '60px 52px', gap: '1.4rem',
-      }}>
+    <div className="slide slide--dark bg-dots--dark" style={{
+      background: 'linear-gradient(150deg, #081e35 0%, #0C2D4E 100%)',
+      justifyContent: 'center', alignItems: 'center',
+    }}>
+      <div className="corner-accent" />
+      <div className="corner-accent--tl" />
+
+      <div style={{ maxWidth: '720px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', zIndex: 1, textAlign: 'center' }}>
+
         <motion.div {...fade(0.1)}>
           <span style={{
-            fontSize: '0.72rem', fontWeight: 700, color: '#718096',
-            letterSpacing: '0.1em', textTransform: 'uppercase',
+            fontSize: '0.72rem', fontWeight: 700, color: '#45C5BE',
+            letterSpacing: '0.14em', textTransform: 'uppercase',
           }}>
             Hasta aquí...
           </span>
         </motion.div>
 
-        <motion.blockquote {...fade(0.2)} style={{
+        <motion.p {...fade(0.2)} style={{
           fontFamily: "'DM Serif Display', serif",
-          fontStyle: 'italic',
-          fontSize: 'clamp(1.4rem, 2.8vw, 2.1rem)',
-          color: '#0C2D4E',
-          lineHeight: 1.35,
-          letterSpacing: '-0.01em',
-          margin: 0,
-          borderLeft: '4px solid #45C5BE',
-          paddingLeft: '1.25rem',
+          fontSize: 'clamp(1.6rem, 3.2vw, 2.6rem)',
+          fontWeight: 400, color: 'rgba(255,255,255,0.6)',
+          lineHeight: 1.3, letterSpacing: '-0.01em', margin: 0,
         }}>
-          "Admiran actitudes como: empatía, paciencia, disposición, respeto..."
-        </motion.blockquote>
-
-        <motion.p {...fade(0.35)} style={{
-          fontSize: 'clamp(0.9rem, 1.4vw, 1.05rem)',
-          color: '#718096', lineHeight: 1.65,
-        }}>
-          Eso no es casualidad. Lo que admiramos en otros, lo necesitamos nosotros mismos.
+          No admiramos lo que saben.
         </motion.p>
-      </div>
 
-      {/* Right Panel — White */}
-      <div style={{
-        background: '#fff',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: '60px 52px', gap: '1.5rem',
-        borderLeft: '1px solid rgba(12,45,78,0.08)',
-      }}>
-        <motion.div {...fade(0.2)}>
-          <span style={{
-            fontSize: '0.72rem', fontWeight: 700, color: '#45C5BE',
-            letterSpacing: '0.1em', textTransform: 'uppercase',
-          }}>
-            La pregunta que guía este módulo
-          </span>
+        <motion.p {...fade(0.4)} style={{
+          fontFamily: "'DM Serif Display', serif",
+          fontSize: 'clamp(1.6rem, 3.2vw, 2.6rem)',
+          fontWeight: 400, color: 'rgba(255,255,255,0.6)',
+          lineHeight: 1.3, letterSpacing: '-0.01em', margin: 0,
+        }}>
+          Admiramos{' '}
+          <span style={{ color: '#fff', fontStyle: 'italic' }}>cómo nos hacen sentir.</span>
+        </motion.p>
+
+        <motion.div {...fade(0.55)}>
+          <div style={{ width: 60, height: 3, background: 'linear-gradient(90deg, #45C5BE, #2BA8A2)', borderRadius: 2 }} />
         </motion.div>
 
-        <motion.h2 {...fade(0.3)} style={{
-          fontFamily: "'DM Serif Display', serif",
-          fontSize: 'clamp(1.5rem, 2.8vw, 2.3rem)',
-          fontWeight: 400, color: '#0C2D4E',
-          lineHeight: 1.25, letterSpacing: '-0.02em',
-          textAlign: 'center',
+        <motion.p {...fade(0.7)} style={{
+          fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
+          fontWeight: 700, color: '#45C5BE',
+          letterSpacing: '0.03em', margin: 0,
         }}>
-          ¿Qué tipo de colaborador decides ser cuando nadie te está mirando?
-        </motion.h2>
-
-        <motion.div {...fade(0.4)}>
-          <div style={{ width: 60, height: 4, background: 'linear-gradient(90deg, #45C5BE, #2BA8A2)', borderRadius: 2, margin: '0 auto' }} />
-        </motion.div>
-
-        <motion.p {...fade(0.5)} style={{
-          fontSize: 'clamp(0.88rem, 1.3vw, 1rem)',
-          color: '#718096', lineHeight: 1.65, textAlign: 'center',
-        }}>
-          No es solo una pregunta de actitud. Es una decisión de identidad profesional.
+          Eso es una actitud.
         </motion.p>
+
       </div>
     </div>
   )
