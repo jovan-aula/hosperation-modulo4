@@ -353,6 +353,7 @@
       <div class="feedback-result" id="fbResult"></div>
       <div class="feedback-pts" id="fbPts"></div>
       <div class="feedback-correct-ans" id="fbCorrectAns" style="display:none;"></div>
+      <div id="fbRetro" style="display:none; margin-top:0.75rem; background:rgba(255,255,255,0.06); border-left:3px solid #45C5BE; border-radius:0 8px 8px 0; padding:10px 14px; font-size:0.82rem; color:rgba(255,255,255,0.7); line-height:1.55; text-align:left;"></div>
       <div class="divider" style="margin:0 auto;"></div>
       <div class="pts-total">Tus puntos: <span id="fbTotalPts">0</span></div>
       <div class="waiting-next">
@@ -381,12 +382,18 @@
     var SESION = "quiz-actitud-aptitud-m4";
 
     var PREGUNTAS = [
-      { texto: "No pierde la calma cuando un familiar lleva horas esperando y se desespera", respuesta: "actitud" },
-      { texto: "Sabe administrar medicamentos respetando dosis, via y horario", respuesta: "aptitud" },
-      { texto: "Pide disculpas cuando comete un error sin ponerse a la defensiva", respuesta: "actitud" },
-      { texto: "Conoce el protocolo de triage y urgencias de su area", respuesta: "aptitud" },
-      { texto: "Siempre le explica al paciente que va a hacerle antes de empezar", respuesta: "actitud", trampa: true },
-      { texto: "Completa sus notas y registros al terminar cada procedimiento sin que nadie se lo recuerde", respuesta: "aptitud", trampa: true }
+      { texto: "No pierde la calma cuando un familiar lleva horas esperando y se desespera", respuesta: "actitud",
+        retro: "El autocontrol bajo presion es una actitud — no se aprende en un manual, se elige en cada momento dificil." },
+      { texto: "Sabe administrar medicamentos respetando dosis, via y horario", respuesta: "aptitud",
+        retro: "Las aptitudes son habilidades tecnicas aprendidas y verificables. Esta se puede capacitar, medir y certificar." },
+      { texto: "Pide disculpas cuando comete un error sin ponerse a la defensiva", respuesta: "actitud",
+        retro: "La humildad es una actitud. Nadie te ensena a disculparte de verdad — es una disposicion interna que se elige." },
+      { texto: "Conoce el protocolo de triage y urgencias de su area", respuesta: "aptitud",
+        retro: "El conocimiento de protocolos es una aptitud tecnica. Se adquiere con formacion y se actualiza con practica." },
+      { texto: "Siempre le explica al paciente que va a hacerle antes de empezar", respuesta: "actitud", trampa: true,
+        retro: "Trampa clasica. Comunicacion asertiva es aptitud, pero hacerlo siempre sin que nadie lo pida es actitud — disposicion y respeto." },
+      { texto: "Completa sus notas y registros al terminar cada procedimiento sin que nadie se lo recuerde", respuesta: "aptitud", trampa: true,
+        retro: "Otra trampa. Parece actitud (responsabilidad) pero es aptitud: documentacion clinica. Registrar con precision es una habilidad tecnica." }
     ];
 
     var TEAM_COLORS = { azul: "#2196f3", verde: "#4caf50", naranja: "#ff9800" };
@@ -563,6 +570,14 @@
         correctAns.textContent = "La respuesta correcta era: " + p.respuesta.charAt(0).toUpperCase() + p.respuesta.slice(1);
       } else {
         correctAns.style.display = "none";
+      }
+
+      var fbRetro = document.getElementById('fbRetro');
+      if (p.retro) {
+        fbRetro.style.display = "block";
+        fbRetro.textContent = p.retro;
+      } else {
+        fbRetro.style.display = "none";
       }
 
       var waitText = document.getElementById('fbWaitText');
