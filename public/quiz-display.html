@@ -567,16 +567,22 @@
       var cntA = 0, cntAp = 0;
       var nuevosScores = { azul: 0, verde: 0, naranja: 0 };
 
+      var correctasPorEquipo = { azul: 0, verde: 0, naranja: 0 };
+
       votos.forEach(function(v) {
-        // Para la pregunta actual, contar barras
         if (parseInt(v.pregunta, 10) === idx) {
           if (v.respuesta === "actitud") cntA++;
           else if (v.respuesta === "aptitud") cntAp++;
         }
-        // Acumular scores totales
-        if (nuevosScores[v.equipo] !== undefined) {
-          nuevosScores[v.equipo] += (parseInt(v.puntos, 10) || 0);
+        if (nuevosScores[v.equipo] !== undefined && v.correcto) {
+          correctasPorEquipo[v.equipo]++;
         }
+      });
+
+      // Score por promedio: (correctas / miembros) * 600
+      TEAMS.forEach(function(eq) {
+        var miembros = registros[eq].length || 1;
+        nuevosScores[eq] = Math.round((correctasPorEquipo[eq] / miembros) * 600);
       });
 
       scores = nuevosScores;
@@ -653,6 +659,7 @@
           '<span class="podio-rank">' + rankLabel + '</span>' +
           '<span class="podio-name" style="color:' + TEAM_COLORS[item.equipo] + ';">' + TEAM_LABELS[item.equipo] + '</span>' +
           '<span class="podio-pts" style="color:' + TEAM_COLORS[item.equipo] + ';">' + item.puntos + ' pts</span>' +
+          '<span style="font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:2px;">promedio por miembro</span>' +
           '<div class="podio-bar" style="background:' + colorAlpha(TEAM_COLORS[item.equipo], 0.35) + ';border:2px solid ' + TEAM_COLORS[item.equipo] + ';"></div>';
         podioEl.appendChild(div);
         setTimeout(function() { div.classList.add("visible"); }, 100 + i * 200);
