@@ -29,6 +29,7 @@ import S13a_PacienteContexto from './slides/S13a_PacienteContexto'
 import S13_PacienteVulnerable from './slides/S13_PacienteVulnerable'
 import S14_MicroComportamientos from './slides/S14_MicroComportamientos'
 import S14b_ImpactoColaborador from './slides/S14b_ImpactoColaborador'
+import S14c_QuizLive from './slides/S14c_QuizLive'
 import S15_PuenteDinamica from './slides/S15_PuenteDinamica'
 import S16_DinamicaInstrucciones from './slides/S16_DinamicaInstrucciones'
 import S17_DinamicaDebrief from './slides/S17_DinamicaDebrief'
@@ -74,9 +75,10 @@ const slides = [
   S13_PacienteVulnerable, // 20
   S14_MicroComportamientos, // 21
   S14b_ImpactoColaborador, // 22
+  S14c_QuizLive,          // 23
 
   // ── DINÁMICA INTERMEDIA ───────────────────
-  S15_PuenteDinamica,    // 23
+  S15_PuenteDinamica,    // 24
   S16_DinamicaInstrucciones, // 24
   S17_DinamicaDebrief,   // 25
 

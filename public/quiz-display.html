@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Display · Hospital Florence</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #081e35;
+      min-height: 100vh;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(8,30,53,0.95);
+      border-bottom: 1px solid rgba(69,197,190,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.02em;
+    }
+    .header-sep {
+      width: 1px; height: 20px;
+      background: rgba(255,255,255,0.12);
+    }
+    .header-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.05em;
+    }
+    .header-counter {
+      font-size: 0.78rem;
+      color: rgba(69,197,190,0.8);
+      font-weight: 600;
+    }
+
+    /* MAIN */
+    .main {
+      padding-top: 64px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* SCREENS */
+    .screen { display: none; flex: 1; flex-direction: column; }
+    .screen.active { display: flex; }
+
+    /* ── REGISTRO ── */
+    .registro-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 40px 24px;
+      gap: 32px;
+    }
+    .registro-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 400;
+      color: white;
+      text-align: center;
+    }
+    .team-columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      flex: 1;
+    }
+    .team-col {
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+    .team-col-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .team-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+    .team-col-name { font-size: 1rem; font-weight: 700; }
+    .team-col-count { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-left: auto; }
+    .participant-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .registro-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 16px;
+    }
+    .btn-primary {
+      padding: 16px 48px;
+      background: #45C5BE;
+      color: #0C2D4E;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      letter-spacing: 0.03em;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-secondary {
+      padding: 14px 28px;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-secondary:hover { color: white; border-color: rgba(255,255,255,0.35); }
+
+    /* ── QUIZ ── */
+    .quiz-wrap {
+      flex: 1;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 32px 40px;
+      gap: 28px;
+    }
+    .quiz-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .q-progress {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .trap-badge {
+      background: rgba(255,152,0,0.18);
+      border: 1px solid rgba(255,152,0,0.45);
+      border-radius: 100px;
+      padding: 3px 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #ff9800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .quiz-center {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      align-items: center;
+      justify-content: center;
+    }
+    .q-text-big {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.3;
+      text-align: center;
+      color: white;
+      max-width: 900px;
+    }
+    .votes-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+    .vote-box {
+      background: rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .vote-box-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .vote-bar-track {
+      height: 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .vote-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.4s ease;
+      min-width: 4px;
+    }
+    .vote-count {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+    .vote-box--actitud .vote-box-label { color: #45C5BE; }
+    .vote-box--actitud .vote-bar-fill { background: #45C5BE; }
+    .vote-box--actitud .vote-count { color: #45C5BE; }
+    .vote-box--aptitud .vote-box-label { color: #5b8ab8; }
+    .vote-box--aptitud .vote-bar-fill { background: #5b8ab8; }
+    .vote-box--aptitud .vote-count { color: #a8c8e8; }
+
+    .scoreboard-mini {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .score-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 100px;
+      padding: 6px 16px;
+    }
+    .score-chip-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .score-chip-name { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.55); }
+    .score-chip-pts { font-size: 0.9rem; font-weight: 800; }
+
+    .quiz-bottom {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    /* ── FIN ── */
+    .fin-wrap {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      padding: 40px;
+    }
+    .fin-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      color: white;
+    }
+    .podio {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      height: 240px;
+    }
+    .podio-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .podio-item.visible { opacity: 1; transform: translateY(0); }
+    .podio-rank {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .podio-name { font-size: 1rem; font-weight: 700; }
+    .podio-pts { font-size: 1.3rem; font-weight: 800; }
+    .podio-bar {
+      width: 100px;
+      border-radius: 8px 8px 0 0;
+    }
+    .podio-item--1st .podio-bar { height: 160px; }
+    .podio-item--2nd .podio-bar { height: 110px; }
+    .podio-item--3rd .podio-bar { height: 70px; }
+    .podio-item--1st .podio-rank { color: #ffd700; font-size: 0.85rem; }
+
+    .fin-actions { display: flex; gap: 12px; }
+
+    /* Divider line */
+    .divider { width: 48px; height: 3px; background: linear-gradient(90deg,#45C5BE,#2BA8A2); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <span class="header-title">Quiz · Actitud o Aptitud</span>
+      <div class="header-sep"></div>
+      <span class="header-badge">Hospital Florence · Modulo 4</span>
+    </div>
+    <span class="header-counter" id="headerCounter">0 participantes</span>
+  </header>
+
+  <div class="main">
+
+    <!-- PANTALLA REGISTRO -->
+    <div class="screen active" id="screenRegistro">
+      <div class="registro-wrap">
+        <div style="text-align:center;">
+          <div class="divider" style="margin:0 auto 16px;"></div>
+          <p class="registro-title">Esperando participantes...</p>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.35);margin-top:8px;">Los equipos se van llenando conforme las personas escanean el QR</p>
+        </div>
+
+        <div class="team-columns">
+          <div class="team-col" id="colAzul">
+            <div class="team-col-header">
+              <div class="team-dot" style="background:#2196f3;"></div>
+              <span class="team-col-name" style="color:#2196f3;">Azul</span>
+              <span class="team-col-count" id="countAzul">0</span>
+            </div>
+            <div class="participant-pills" id="pillsAzul"></div>
+          </div>
+          <div class="team-col" id="colVerde">
+            <div class="team-col-header">
+              <div class="team-dot" style="background:#4caf50;"></div>
+              <span class="team-col-name" style="color:#4caf50;">Verde</span>
+              <span class="team-col-count" id="countVerde">0</span>
+            </div>
+            <div class="participant-pills" id="pillsVerde"></div>
+          </div>
+          <div class="team-col" id="colNaranja">
+            <div class="team-col-header">
+              <div class="team-dot" style="background:#ff9800;"></div>
+              <span class="team-col-name" style="color:#ff9800;">Naranja</span>
+              <span class="team-col-count" id="countNaranja">0</span>
+            </div>
+            <div class="participant-pills" id="pillsNaranja"></div>
+          </div>
+        </div>
+
+        <div class="registro-actions">
+          <button class="btn-primary" onclick="iniciarQuiz()">Iniciar quiz</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANTALLA QUIZ -->
+    <div class="screen" id="screenQuiz">
+      <div class="quiz-wrap">
+        <div class="quiz-top">
+          <span class="q-progress" id="qProgress">1 / 6</span>
+          <span class="trap-badge" id="trapBadge" style="display:none;">Trampa</span>
+          <span style="margin-left:auto;font-size:0.78rem;color:rgba(255,255,255,0.35);" id="totalVotos">0 votos</span>
+        </div>
+
+        <div class="quiz-center">
+          <p class="q-text-big" id="qTextoBig"></p>
+          <div class="votes-row">
+            <div class="vote-box vote-box--actitud">
+              <span class="vote-box-label">Actitud</span>
+              <div class="vote-bar-track">
+                <div class="vote-bar-fill" id="barActitud" style="width:0%;background:#45C5BE;"></div>
+              </div>
+              <span class="vote-count" id="cntActitud">0</span>
+            </div>
+            <div class="vote-box vote-box--aptitud">
+              <span class="vote-box-label">Aptitud</span>
+              <div class="vote-bar-track">
+                <div class="vote-bar-fill" id="barAptitud" style="width:0%;background:#5b8ab8;"></div>
+              </div>
+              <span class="vote-count" id="cntAptitud">0</span>
+            </div>
+          </div>
+          <div class="scoreboard-mini" id="scoreboardMini"></div>
+        </div>
+
+        <div class="quiz-bottom">
+          <button class="btn-primary" id="btnAvanzar" onclick="avanzarPregunta()">Siguiente pregunta</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANTALLA FIN -->
+    <div class="screen" id="screenFin">
+      <div class="fin-wrap">
+        <p class="fin-title">Resultados finales</p>
+        <div class="divider"></div>
+        <div class="podio" id="podio"></div>
+        <div class="fin-actions">
+          <button class="btn-primary" onclick="nuevaSesion()">Nueva sesion</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxSkf9bUF95VsUK-asDP2z5LhDLlMHGxdMM48ebxxle2IjhZDyiUjY06yXlrOoyc-s/exec";
+    var SESION = "quiz-actitud-aptitud-m4";
+
+    var PREGUNTAS = [
+      { texto: "No pierde la calma cuando un familiar lleva horas esperando y se desespera", respuesta: "actitud" },
+      { texto: "Sabe administrar medicamentos respetando dosis, via y horario", respuesta: "aptitud" },
+      { texto: "Pide disculpas cuando comete un error sin ponerse a la defensiva", respuesta: "actitud" },
+      { texto: "Conoce el protocolo de triage y urgencias de su area", respuesta: "aptitud" },
+      { texto: "Siempre le explica al paciente que va a hacerle antes de empezar", respuesta: "actitud", trampa: true },
+      { texto: "Completa sus notas y registros al terminar cada procedimiento sin que nadie se lo recuerde", respuesta: "aptitud", trampa: true }
+    ];
+
+    var TEAM_COLORS = { azul: "#2196f3", verde: "#4caf50", naranja: "#ff9800" };
+    var TEAM_LABELS = { azul: "Azul", verde: "Verde", naranja: "Naranja" };
+    var TEAMS = ["azul", "verde", "naranja"];
+
+    var estadoLocal = {
+      fase: "espera",
+      preguntaActual: 0
+    };
+
+    var scores = { azul: 0, verde: 0, naranja: 0 };
+    var registros = { azul: [], verde: [], naranja: [] };
+    var pollingInterval = null;
+
+    // ── POLLING ──────────────────────────────────────────────────────────────
+
+    function iniciarPolling(intervalo) {
+      if (pollingInterval) clearInterval(pollingInterval);
+      pollingInterval = setInterval(function() {
+        if (estadoLocal.fase === "espera" || estadoLocal.fase === "registro") {
+          pollRegistros();
+        } else if (estadoLocal.fase === "quiz") {
+          pollRegistros();
+          pollVotos();
+        }
+      }, intervalo || 2500);
+    }
+
+    function detenerPolling() {
+      if (pollingInterval) { clearInterval(pollingInterval); pollingInterval = null; }
+    }
+
+    function pollRegistros() {
+      fetch(SCRIPT_URL + "?tipo=quiz-registros&sesion=" + encodeURIComponent(SESION))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data || !Array.isArray(data.registros)) return;
+          registros = { azul: [], verde: [], naranja: [] };
+          data.registros.forEach(function(r) {
+            if (registros[r.equipo] !== undefined) {
+              registros[r.equipo].push(r.nombre || "—");
+            }
+          });
+          renderRegistros();
+        })
+        .catch(function() {});
+    }
+
+    function pollVotos() {
+      fetch(SCRIPT_URL + "?tipo=quiz-votos&sesion=" + encodeURIComponent(SESION))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data || !Array.isArray(data.votos)) return;
+          actualizarVotos(data.votos);
+        })
+        .catch(function() {});
+    }
+
+    // ── REGISTRO ─────────────────────────────────────────────────────────────
+
+    function renderRegistros() {
+      var total = 0;
+      TEAMS.forEach(function(equipo) {
+        var lista = registros[equipo] || [];
+        total += lista.length;
+        var pillsEl = document.getElementById("pills" + cap(equipo));
+        var countEl = document.getElementById("count" + cap(equipo));
+        if (!pillsEl || !countEl) return;
+        countEl.textContent = lista.length;
+        pillsEl.innerHTML = "";
+        lista.forEach(function(nombre) {
+          var pill = document.createElement("span");
+          pill.className = "pill";
+          pill.textContent = nombre;
+          pill.style.borderColor = colorAlpha(TEAM_COLORS[equipo], 0.35);
+          pill.style.color = TEAM_COLORS[equipo];
+          pillsEl.appendChild(pill);
+        });
+      });
+      document.getElementById("headerCounter").textContent = total + " participante" + (total === 1 ? "" : "s");
+    }
+
+    function iniciarQuiz() {
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ tipo: "quiz-estado", fase: "quiz", pregunta: 0, sesion: SESION })
+      }).catch(function() {});
+
+      estadoLocal.fase = "quiz";
+      estadoLocal.preguntaActual = 0;
+      scores = { azul: 0, verde: 0, naranja: 0 };
+      mostrarPantalla("screenQuiz");
+      renderPregunta(0);
+      iniciarPolling(2000);
+    }
+
+    // ── QUIZ ─────────────────────────────────────────────────────────────────
+
+    function renderPregunta(idx) {
+      var p = PREGUNTAS[idx];
+      if (!p) return;
+      document.getElementById("qProgress").textContent = (idx + 1) + " / " + PREGUNTAS.length;
+      document.getElementById("qTextoBig").textContent = p.texto;
+      document.getElementById("trapBadge").style.display = p.trampa ? "inline-block" : "none";
+      document.getElementById("cntActitud").textContent = "0";
+      document.getElementById("cntAptitud").textContent = "0";
+      document.getElementById("barActitud").style.width = "0%";
+      document.getElementById("barAptitud").style.width = "0%";
+      document.getElementById("totalVotos").textContent = "0 votos";
+
+      var btnAvanzar = document.getElementById("btnAvanzar");
+      if (idx < PREGUNTAS.length - 1) {
+        btnAvanzar.textContent = "Siguiente pregunta";
+      } else {
+        btnAvanzar.textContent = "Ver resultados";
+      }
+      renderScoreboard();
+    }
+
+    function actualizarVotos(votos) {
+      var idx = estadoLocal.preguntaActual;
+      var cntA = 0, cntAp = 0;
+      var nuevosScores = { azul: 0, verde: 0, naranja: 0 };
+
+      votos.forEach(function(v) {
+        // Para la pregunta actual, contar barras
+        if (parseInt(v.pregunta, 10) === idx) {
+          if (v.respuesta === "actitud") cntA++;
+          else if (v.respuesta === "aptitud") cntAp++;
+        }
+        // Acumular scores totales
+        if (nuevosScores[v.equipo] !== undefined) {
+          nuevosScores[v.equipo] += (parseInt(v.puntos, 10) || 0);
+        }
+      });
+
+      scores = nuevosScores;
+      var total = cntA + cntAp;
+      document.getElementById("cntActitud").textContent = cntA;
+      document.getElementById("cntAptitud").textContent = cntAp;
+      document.getElementById("barActitud").style.width = total > 0 ? Math.round(cntA / total * 100) + "%" : "0%";
+      document.getElementById("barAptitud").style.width = total > 0 ? Math.round(cntAp / total * 100) + "%" : "0%";
+      document.getElementById("totalVotos").textContent = total + " voto" + (total === 1 ? "" : "s");
+      renderScoreboard();
+    }
+
+    function renderScoreboard() {
+      var el = document.getElementById("scoreboardMini");
+      el.innerHTML = "";
+      TEAMS.forEach(function(equipo) {
+        var chip = document.createElement("div");
+        chip.className = "score-chip";
+        chip.innerHTML =
+          '<div class="score-chip-dot" style="background:' + TEAM_COLORS[equipo] + ';"></div>' +
+          '<span class="score-chip-name">' + TEAM_LABELS[equipo] + '</span>' +
+          '<span class="score-chip-pts" style="color:' + TEAM_COLORS[equipo] + ';">' + (scores[equipo] || 0) + '</span>';
+        el.appendChild(chip);
+      });
+    }
+
+    function avanzarPregunta() {
+      var idx = estadoLocal.preguntaActual;
+      if (idx < PREGUNTAS.length - 1) {
+        var siguiente = idx + 1;
+        estadoLocal.preguntaActual = siguiente;
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({ tipo: "quiz-estado", fase: "quiz", pregunta: siguiente, sesion: SESION })
+        }).catch(function() {});
+        renderPregunta(siguiente);
+      } else {
+        // Ultima pregunta → ir a fin
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({ tipo: "quiz-estado", fase: "fin", pregunta: idx, sesion: SESION })
+        }).catch(function() {});
+        estadoLocal.fase = "fin";
+        detenerPolling();
+        mostrarFin();
+      }
+    }
+
+    // ── FIN ───────────────────────────────────────────────────────────────────
+
+    function mostrarFin() {
+      mostrarPantalla("screenFin");
+      renderPodio();
+    }
+
+    function renderPodio() {
+      var ranking = TEAMS.map(function(t) {
+        return { equipo: t, puntos: scores[t] || 0 };
+      }).sort(function(a, b) { return b.puntos - a.puntos; });
+
+      var podioEl = document.getElementById("podio");
+      podioEl.innerHTML = "";
+
+      var posiciones = ["2nd", "1st", "3rd"];
+      var orden = [ranking[1], ranking[0], ranking[2]]; // 2nd centro izq, 1st centro, 3rd derecha
+
+      orden.forEach(function(item, i) {
+        if (!item) return;
+        var pos = posiciones[i];
+        var rankLabel = pos === "1st" ? "1er lugar" : pos === "2nd" ? "2do lugar" : "3er lugar";
+        var div = document.createElement("div");
+        div.className = "podio-item podio-item--" + pos;
+        div.innerHTML =
+          '<span class="podio-rank">' + rankLabel + '</span>' +
+          '<span class="podio-name" style="color:' + TEAM_COLORS[item.equipo] + ';">' + TEAM_LABELS[item.equipo] + '</span>' +
+          '<span class="podio-pts" style="color:' + TEAM_COLORS[item.equipo] + ';">' + item.puntos + ' pts</span>' +
+          '<div class="podio-bar" style="background:' + colorAlpha(TEAM_COLORS[item.equipo], 0.35) + ';border:2px solid ' + TEAM_COLORS[item.equipo] + ';"></div>';
+        podioEl.appendChild(div);
+        setTimeout(function() { div.classList.add("visible"); }, 100 + i * 200);
+      });
+    }
+
+    function nuevaSesion() {
+      scores = { azul: 0, verde: 0, naranja: 0 };
+      registros = { azul: [], verde: [], naranja: [] };
+      estadoLocal = { fase: "espera", preguntaActual: 0 };
+      renderRegistros();
+      mostrarPantalla("screenRegistro");
+      iniciarPolling(2500);
+    }
+
+    // ── UTILS ─────────────────────────────────────────────────────────────────
+
+    function mostrarPantalla(id) {
+      ["screenRegistro","screenQuiz","screenFin"].forEach(function(s) {
+        var el = document.getElementById(s);
+        el.classList.toggle("active", s === id);
+      });
+    }
+
+    function cap(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function colorAlpha(hex, alpha) {
+      var r = parseInt(hex.slice(1,3),16);
+      var g = parseInt(hex.slice(3,5),16);
+      var b = parseInt(hex.slice(5,7),16);
+      return "rgba("+r+","+g+","+b+","+alpha+")";
+    }
+
+    // ── INIT ──────────────────────────────────────────────────────────────────
+    renderRegistros();
+    iniciarPolling(2500);
+  </script>
+</body>
+</html>
