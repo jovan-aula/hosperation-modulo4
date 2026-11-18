@@ -43,7 +43,7 @@ export default function App() {
 
   return (
     <div className="viewport">
-      <div className="stage" style={{ transform: `scale(${scale})` }}>
+      <div className="stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
         <Slide key={i} />
         {s.chrome !== false && (
           <div className={`chrome ${onDark ? 'on-dark' : ''}`}>
