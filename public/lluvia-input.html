@@ -127,11 +127,11 @@
 
   <div class="card" id="formCard">
     <div class="badge">Actividad en vivo</div>
-    <h1>Piensa en alguien que admires.</h1>
+    <h1>¿Qué conducta del personal te hace confiar en un hospital?</h1>
     <div class="divider"></div>
-    <p class="hint">¿Qué es lo que admiras de esa persona? Escribe 3 cualidades — una palabra o frase corta.</p>
+    <p class="hint">Piensa en una vez que fuiste paciente o familiar. Escribe hasta 3 cosas que hizo alguien del personal — una frase corta.</p>
 
-    <div class="name-field-wrap">
+    <div class="name-field-wrap" style="display:none">
       <label class="name-label">¿Cómo se llama? <span class="opt">(opcional)</span></label>
       <input type="text" id="nombre" placeholder="Ej: Mi mamá, María, mi jefa..." maxlength="60" autocomplete="off" style="width:100%;" />
     </div>
@@ -139,15 +139,15 @@
     <div class="fields">
       <div class="field-row">
         <div class="field-num">1</div>
-        <input type="text" id="r1" placeholder="Ej: empatía, paciencia..." maxlength="120" autocomplete="off" />
+        <input type="text" id="r1" placeholder="Ej: me explicó qué seguía" maxlength="120" autocomplete="off" />
       </div>
       <div class="field-row">
         <div class="field-num">2</div>
-        <input type="text" id="r2" placeholder="Ej: siempre dispuesto a ayudar..." maxlength="120" autocomplete="off" />
+        <input type="text" id="r2" placeholder="Ej: me llamó por mi nombre" maxlength="120" autocomplete="off" />
       </div>
       <div class="field-row">
         <div class="field-num">3</div>
-        <input type="text" id="r3" placeholder="Ej: nunca pierde la calma..." maxlength="120" autocomplete="off" />
+        <input type="text" id="r3" placeholder="Ej: regresó con la respuesta" maxlength="120" autocomplete="off" />
       </div>
     </div>
 
@@ -195,7 +195,7 @@
       var promesas = respuestas.map(function(texto) {
         return fetch(SCRIPT_URL, {
           method: "POST",
-          body: JSON.stringify({ tipo: "lluvia", texto: texto, sesion: "colaborador-excelencia", nombre: nombre })
+          body: JSON.stringify({ tipo: "lluvia", texto: texto, sesion: "actitudes-aptitudes-m5", nombre: nombre })
         }).catch(function() {});
       });
 
