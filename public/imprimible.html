@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8" />
-<title>Ejercicio imprimible — Actitudes y aptitudes · Hospital Florence</title>
+<title>Ejercicio en equipo — Actitudes y aptitudes · Hospital Florence</title>
 <style>
   @font-face { font-family: 'DM Sans'; font-weight: 400; src: url(fonts/dm-sans-latin-400-normal.woff2) format('woff2'); }
   @font-face { font-family: 'DM Sans'; font-weight: 500; src: url(fonts/dm-sans-latin-500-normal.woff2) format('woff2'); }
@@ -15,221 +15,79 @@
   :root { --navy: #0C2D4E; --teal: #45C5BE; --teal-d: #2BA8A2; --mist: #EEF2F7; --ink: #2D3748; --soft: #5F6F86; --line: #C9D3DF; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #ddd; }
-  .page { width: 8.5in; height: 11in; background: #fff; margin: 0 auto 20px; padding: 0.55in 0.6in 0.5in; position: relative; overflow: hidden; display: flex; flex-direction: column; page-break-after: always; }
-  @media print { body { background: #fff; } .page { margin: 0; } }
+  .page { width: 8.5in; height: 11in; background: #fff; margin: 0 auto; padding: 0.55in 0.6in 0.5in; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  @media print { body { background: #fff; } }
 
   header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 2.5px solid var(--navy); }
   header img { height: 34px; }
   .hoja { font-size: 10pt; color: var(--teal-d); font-weight: 700; }
-  .meta { font-size: 8.5pt; color: var(--soft); text-align: right; line-height: 1.4; }
-  h1 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 27pt; line-height: 1.05; color: var(--navy); margin-top: 18px; }
-  h2 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 15pt; color: var(--navy); }
+  h1 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 28pt; line-height: 1.05; color: var(--navy); margin-top: 18px; }
   .lead { font-size: 10.5pt; color: var(--soft); margin-top: 6px; line-height: 1.45; }
+
+  .fields { display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px 26px; margin-top: 14px; }
   .field { display: flex; gap: 10px; align-items: flex-end; font-size: 9.5pt; color: var(--soft); }
-  .field span.l { flex: 1; border-bottom: 1px solid var(--line); height: 18px; }
-  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; margin-top: 14px; }
+  .field span { flex: 1; border-bottom: 1px solid var(--line); height: 18px; }
 
-  .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
-  .role { background: var(--mist); border-radius: 10px; padding: 11px 13px; }
-  .role b { display: block; font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 12.5pt; color: var(--navy); }
-  .role p { font-size: 8.8pt; line-height: 1.4; margin-top: 3px; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .steps div { background: var(--mist); border-radius: 10px; padding: 10px 13px; font-size: 9pt; line-height: 1.35; }
+  .steps em { display: block; font-family: 'DM Serif Display', serif; font-style: normal; font-size: 18pt; line-height: 1; color: var(--teal-d); margin-bottom: 4px; }
+  .steps b { color: var(--navy); }
 
-  .steps { display: flex; gap: 8px; margin-top: 12px; font-size: 9pt; }
-  .steps div { flex: 1; display: flex; gap: 7px; align-items: baseline; }
-  .steps em { font-family: 'DM Serif Display', serif; font-style: normal; font-size: 16pt; color: var(--teal-d); }
+  .caso { background: var(--navy); color: #fff; border-radius: 14px; padding: 16px 20px 17px; margin-top: 16px; }
+  .caso .k { font-size: 8.5pt; font-weight: 700; color: var(--teal); letter-spacing: .04em; }
+  .caso h2 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 19pt; margin-top: 2px; }
+  .caso p { font-size: 10.5pt; line-height: 1.5; margin-top: 6px; color: rgba(255,255,255,.88); }
 
-  .caso { border: 1.5px dashed #9AAABD; border-radius: 12px; padding: 13px 16px 12px; margin-top: 12px; position: relative; }
-  .caso .tag { position: absolute; top: -8px; left: 14px; background: #fff; padding: 0 6px; font-size: 8pt; color: var(--soft); }
-  .caso h2 span { color: var(--teal-d); font-family: 'DM Sans'; font-size: 9pt; font-weight: 700; margin-right: 6px; }
-  .caso .sit { font-size: 9.8pt; line-height: 1.45; margin-top: 5px; }
-  .caso .q { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
-  .caso .q div { font-size: 8.6pt; line-height: 1.35; color: var(--navy); font-weight: 600; }
-  .caso .q div i { display: block; font-style: normal; font-weight: 400; color: var(--soft); margin-top: 2px; border-bottom: 1px solid var(--line); height: 30px; }
+  .q { margin-top: 16px; display: flex; flex-direction: column; gap: 13px; flex: 1; }
+  .q > div { display: flex; flex-direction: column; flex: 1; }
+  .q b { font-size: 10.5pt; color: var(--navy); }
+  .q b span { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 13pt; color: var(--teal-d); margin-right: 7px; }
+  .q small { font-size: 8.5pt; color: var(--soft); margin-top: 1px; }
+  .q i { flex: 1; min-height: 44px; margin-top: 4px; background: repeating-linear-gradient(to bottom, transparent 0, transparent 21px, var(--line) 21px, var(--line) 22px); }
+  .q .frase i { border: 1.5px dashed #9AAABD; border-radius: 10px; background: none; }
 
-  table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 9pt; }
-  th { text-align: left; font-size: 8pt; font-weight: 700; color: #fff; background: var(--navy); padding: 7px 8px; }
-  th.c { text-align: center; width: 48px; }
-  td { border-bottom: 1px solid var(--line); padding: 8px 8px; vertical-align: top; line-height: 1.35; }
-  td.c { text-align: center; }
-  td.c span { display: inline-block; width: 26px; height: 22px; border: 1.2px solid var(--line); border-radius: 5px; }
-  td.ev { width: 150px; }
-  tr:nth-child(even) td { background: #F7F9FB; }
-
-  .escala { display: flex; gap: 8px; margin-top: 12px; }
-  .escala div { flex: 1; background: var(--mist); border-radius: 8px; padding: 6px 8px; font-size: 8.2pt; line-height: 1.3; }
-  .escala b { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 14pt; color: var(--teal-d); margin-right: 5px; }
-
-  .rule { margin-top: 12px; display: flex; gap: 18px; font-size: 9pt; }
-  .rule div { flex: 1; padding: 8px 12px; border-radius: 8px; }
-  .ok { background: #E6F6F5; color: #1F6F6B; }
-  .bad { background: #FCEDED; color: #8B2424; }
-
-  .debrief { margin-top: 14px; columns: 2; column-gap: 26px; font-size: 9pt; line-height: 1.45; }
-  .debrief li { margin: 0 0 4px 14px; break-inside: avoid; }
-
-  .compromiso { margin-top: 18px; display: flex; flex-direction: column; gap: 16px; }
-  .compromiso .f { font-family: 'DM Serif Display', serif; font-size: 17pt; color: var(--navy); }
-  .compromiso .ln { border-bottom: 1.3px dashed #9AAABD; height: 30px; }
-  .micro { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-  .micro div { border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 13px; height: 112px; }
-  .micro b { font-size: 9pt; color: var(--navy); }
-  .micro p { font-size: 8pt; color: var(--soft); margin-top: 2px; }
-
-  .cierre { margin-top: auto; background: var(--navy); color: #fff; border-radius: 14px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-  .cierre .t1 { font-family: 'DM Serif Display', serif; font-size: 15pt; }
-  .cierre .t1 i { color: var(--teal); }
-  .cierre .t2 { font-size: 8.5pt; color: rgba(255,255,255,.7); text-align: right; line-height: 1.5; }
+  .cierre { margin-top: 14px; background: var(--mist); border-radius: 12px; padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: 9pt; color: var(--navy); }
+  .cierre b { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 13pt; }
   footer { margin-top: 10px; font-size: 7.5pt; color: var(--soft); display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
 
-<!-- ───────────── HOJA 1 · EQUIPO ───────────── -->
 <section class="page">
   <header>
-    <div><div class="hoja">Hoja 1 · Para el equipo (una por trío)</div></div>
+    <div class="hoja">Ejercicio en equipo · una hoja por equipo</div>
     <img src="img/aula-hosperation-navy.png" alt="Aula · Hosperation" />
   </header>
-  <h1>Simulación breve en tríos</h1>
-  <p class="lead">Ahora no lo escuchamos: lo practicamos. Cada ronda dura 3 minutos de actuación y 5 de debriefing. Al terminar, roten roles hasta que todos hayan pasado por los tres.</p>
+  <h1>Un caso, una respuesta de equipo</h1>
+  <p class="lead">Lean el caso, pónganse de acuerdo y escriban su respuesta. Al final, una persona del equipo la explica al grupo.</p>
 
   <div class="fields">
-    <div class="field">Equipo / área<span class="l"></span></div>
-    <div class="field">Fecha<span class="l"></span></div>
-  </div>
-
-  <div class="roles">
-    <div class="role"><b>Colaborador</b><p>Atiende la situación como lo haría en su turno, dentro de su función.</p></div>
-    <div class="role"><b>Paciente o familiar</b><p>Actúa el caso. Sin exagerar y sin facilitárselo al colaborador.</p></div>
-    <div class="role"><b>Observador</b><p>Llena la hoja 2. Registra hechos, no adjetivos. Lleva el tiempo.</p></div>
+    <div class="field">Equipo / área<span></span></div>
+    <div class="field">Integrantes<span></span></div>
   </div>
 
   <div class="steps">
-    <div><em>1</em>Lean el caso</div>
-    <div><em>2</em>Actúen 3 min</div>
-    <div><em>3</em>Debriefing 5 min</div>
-    <div><em>4</em>Roten y repitan</div>
+    <div><em>1</em><b>Lean el caso</b> en voz alta.</div>
+    <div><em>2</em><b>Respondan juntos</b> las cuatro preguntas de esta hoja.</div>
+    <div><em>3</em><b>Expliquen al grupo</b> qué harían y qué le dirían al paciente.</div>
   </div>
 
-  <div class="caso"><span class="tag">✂ Ronda 1</span>
-    <h2><span>Caso 1</span>Espera prolongada</h2>
-    <p class="sit">Un paciente lleva más tiempo del esperado y exige una explicación en voz alta frente a otras personas. El colaborador no conoce la causa exacta de la demora.</p>
-    <div class="q">
-      <div>¿Qué actitud se requiere?<i></i></div>
-      <div>¿Qué aptitud aplica?<i></i></div>
-      <div>¿Qué puede confirmar y qué debe escalar?<i></i></div>
-    </div>
+  <div class="caso">
+    <div class="k">EL CASO</div>
+    <h2>Espera prolongada</h2>
+    <p>Un paciente lleva más tiempo del esperado y exige una explicación en voz alta frente a otras personas. El colaborador no conoce la causa exacta de la demora.</p>
   </div>
 
-  <div class="caso"><span class="tag">✂ Ronda 2</span>
-    <h2><span>Caso 2</span>Comunicación y entorno</h2>
-    <p class="sit">Una persona no comprende las instrucciones que le dieron y se muestra alterada por el ruido y el movimiento del área. Su acompañante tampoco sabe qué sigue.</p>
-    <div class="q">
-      <div>¿Qué debe observar el colaborador?<i></i></div>
-      <div>¿Qué ajustes sencillos puede ofrecer?<i></i></div>
-      <div>¿A quién debe canalizar?<i></i></div>
-    </div>
-  </div>
-
-  <div class="caso"><span class="tag">✂ Ronda 3</span>
-    <h2><span>Caso 3</span>Condición insegura</h2>
-    <p class="sit">Un colaborador detecta en un pasillo una condición que podría ocasionar una caída o lesión. No pertenece a su área y hay pacientes circulando.</p>
-    <div class="q">
-      <div>¿Qué hace primero?<i></i></div>
-      <div>¿A quién avisa y por qué canal?<i></i></div>
-      <div>¿Cómo confirma que se atendió?<i></i></div>
-    </div>
+  <div class="q">
+    <div><b><span>1</span>¿Qué actitud se requiere?</b><small>Cómo debe tratar a la persona.</small><i></i></div>
+    <div><b><span>2</span>¿Qué aptitud aplica?</b><small>Qué tiene que saber hacer.</small><i></i></div>
+    <div><b><span>3</span>¿Qué puede confirmar y qué debe escalar?</b><small>Qué está en sus manos, a quién le toca lo demás y cuál es el siguiente paso.</small><i></i></div>
+    <div class="frase"><b><span>4</span>¿Qué le diríamos al paciente?</b><small>Escríbanlo tal como lo dirían, en una o dos frases.</small><i></i></div>
   </div>
 
   <div class="cierre">
-    <div class="t1">Se evalúa tono, claridad, precisión y seguimiento. <i>No si la persona “es amable”.</i></div>
-  </div>
-  <footer><span>Actitudes y aptitudes en el entorno hospitalario · Hospital Florence</span><span>Hosperation</span></footer>
-</section>
-
-<!-- ───────────── HOJA 2 · OBSERVADOR ───────────── -->
-<section class="page">
-  <header>
-    <div><div class="hoja">Hoja 2 · Para el observador</div></div>
-    <img src="img/aula-hosperation-navy.png" alt="Aula · Hosperation" />
-  </header>
-  <h1>Lista de observación conductual</h1>
-  <p class="lead">Califica lo que viste en esta situación, no la personalidad de nadie. Anota un ejemplo concreto como evidencia.</p>
-
-  <div class="escala">
-    <div><b>1</b>No demostrado</div>
-    <div><b>2</b>Inconsistente</div>
-    <div><b>3</b>Generalmente demostrado</div>
-    <div><b>4</b>Consistente y referente</div>
-  </div>
-
-  <table>
-    <thead><tr><th>Conducta observable</th><th class="c">Ronda 1</th><th class="c">Ronda 2</th><th class="c">Ronda 3</th><th>Evidencia</th></tr></thead>
-    <tbody>
-      <tr><td>Saluda, se presenta cuando corresponde y ofrece orientación clara.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Escucha sin interrumpir y confirma la necesidad antes de responder.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Usa un lenguaje respetuoso, sencillo y adecuado al contexto.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Protege la privacidad y evita divulgar información.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Actúa dentro de su función y reconoce cuándo canalizar o pedir apoyo.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Comparte la información por los canales establecidos y confirma la recepción.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Responde a la inconformidad sin discutir, culpar ni prometer lo que no controla.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-      <tr><td>Reporta condiciones inseguras, errores o riesgos conforme al procedimiento.</td><td class="c"><span></span></td><td class="c"><span></span></td><td class="c"><span></span></td><td class="ev"></td></tr>
-    </tbody>
-  </table>
-
-  <div class="rule">
-    <div class="ok"><b>Hecho:</b> “Interrumpió tres veces.”</div>
-    <div class="bad"><b>Juicio:</b> “No le importa.”</div>
-  </div>
-
-  <h2 style="margin-top:18px">Guía de debriefing (5 minutos)</h2>
-  <ol class="debrief">
-    <li>¿Qué necesitaba realmente el paciente o familiar?</li>
-    <li>¿Qué conducta ayudó a generar confianza?</li>
-    <li>¿En qué momento se perdió claridad o coordinación?</li>
-    <li>¿El colaborador actuó dentro de su competencia y autoridad?</li>
-    <li>¿Qué procedimiento, herramienta o apoyo hacía falta?</li>
-    <li>¿Qué haríamos igual y qué cambiaríamos la próxima vez?</li>
-  </ol>
-
-  <div class="cierre">
-    <div class="t1">Registra ejemplos, <i>no adjetivos.</i></div>
-    <div class="t2">Observador · ronda 1 ________<br />ronda 2 ________ · ronda 3 ________</div>
-  </div>
-  <footer><span>Actitudes y aptitudes en el entorno hospitalario · Hospital Florence</span><span>Hosperation</span></footer>
-</section>
-
-<!-- ───────────── HOJA 3 · INDIVIDUAL ───────────── -->
-<section class="page">
-  <header>
-    <div><div class="hoja">Hoja 3 · Individual (una por persona)</div></div>
-    <img src="img/aula-hosperation-navy.png" alt="Aula · Hosperation" />
-  </header>
-  <h1>Mi compromiso</h1>
-  <p class="lead">Una conducta que se pueda ver. Específica y realista. “Ser mejor” no cuenta. Tómate 3 minutos y escríbelo.</p>
-
-  <div class="fields">
-    <div class="field">Nombre<span class="l"></span></div>
-    <div class="field">Área y turno<span class="l"></span></div>
-  </div>
-
-  <div class="compromiso">
-    <div><div class="f">Una conducta que voy a fortalecer es…</div><div class="ln"></div><div class="ln"></div></div>
-    <div><div class="f">La aplicaré cuando…</div><div class="ln"></div><div class="ln"></div></div>
-    <div><div class="f">Sabré que mejoré porque…</div><div class="ln"></div><div class="ln"></div></div>
-  </div>
-
-  <h2 style="margin-top:22px">Mi microplan</h2>
-  <div class="micro">
-    <div><b>Conducta específica</b><p>Lo que otros podrán ver que hago.</p></div>
-    <div><b>Situación en la que la aplicaré</b><p>Momento, lugar o tipo de paciente.</p></div>
-    <div><b>Apoyo que necesito</b><p>Información, capacitación o herramienta del hospital.</p></div>
-    <div><b>Evidencia de mejora</b><p>Cómo lo sabremos yo y mi jefatura.</p></div>
-  </div>
-
-  <div class="cierre">
-    <div class="t1">La excelencia no se declara. <i>Se demuestra.</i></div>
-    <div class="t2">Actitud: cómo trato<br />Aptitud: cómo ejecuto<br />Cultura: cómo el hospital hace posibles ambas</div>
+    <b>Se evalúa tono, claridad, precisión y seguimiento.</b>
+    <span>No si la persona “es amable”.</span>
   </div>
   <footer><span>Actitudes y aptitudes en el entorno hospitalario · Hospital Florence</span><span>Hosperation</span></footer>
 </section>

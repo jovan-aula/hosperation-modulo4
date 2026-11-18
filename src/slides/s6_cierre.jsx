@@ -65,7 +65,7 @@ export function Compromiso() {
     <div className="slide deep">
       <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.3fr', gap: 100, alignItems: 'center' }}>
         <div>
-          <Label i={0}>Mi compromiso · hoja 3</Label>
+          <Label i={0}>Mi compromiso</Label>
           <R i={1} className="h1">Una conducta que se pueda ver.</R>
           <Bar i={2} />
           <R i={3} className="body" style={{ color: 'rgba(255,255,255,.72)' }}>
@@ -133,6 +133,39 @@ export function Referencias() {
       <R i={2} className="small" style={{ marginTop: 20, fontSize: 18 }}>
         Contenido: Mtro. Edrick Reyes M., Hosperation (15 nov 2026). Las propuestas para Florence son adaptación de Hosperation, no prácticas ya implementadas. No implica afiliación ni aval de las instituciones citadas.
       </R>
+    </div>
+  )
+}
+
+// Reel de Instagram (@aprendemosjuntosbbva): dudar de uno mismo como señal de crecimiento.
+// Para cambiarlo, reemplaza REEL_ID por el código que aparece en la URL del reel.
+const REEL_ID = 'Df4sV3uuc5W'
+
+export function ReelReflexion() {
+  return (
+    <div className="slide deep">
+      <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 110, alignItems: 'center', height: '100%' }}>
+        <div>
+          <Label i={0}>Antes del compromiso</Label>
+          <R i={1} className="h1">¿Cuándo fue la última vez que te detuviste a escucharte?</R>
+          <Bar i={2} />
+          <R i={3} className="body" style={{ color: 'rgba(255,255,255,.72)' }}>
+            Dudar de lo que hacemos no es mala señal. Muchas veces es el primer paso para mejorar.
+          </R>
+          <R i={4} className="small" style={{ marginTop: 30 }}>Aprendemos Juntos · Instagram</R>
+        </div>
+        <R i={2} style={{ justifySelf: 'center' }}>
+          {/* Instagram no permite insertar este reel (X-Frame-Options: DENY), así que la tarjeta lo abre en otra pestaña. */}
+          <a href={`https://www.instagram.com/reel/${REEL_ID}/`} target="_blank" rel="noopener noreferrer"
+            style={{ height: 820, aspectRatio: '9 / 16', borderRadius: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 34, textDecoration: 'none', color: '#fff', background: 'linear-gradient(160deg, rgba(69,197,190,.22) 0%, rgba(255,255,255,.06) 55%, rgba(255,255,255,.03) 100%)', border: '2px solid rgba(69,197,190,.45)', boxShadow: '0 40px 100px -40px rgba(0,0,0,.8)' }}>
+            <span style={{ width: 150, height: 150, borderRadius: '50%', background: 'var(--teal)', display: 'grid', placeItems: 'center' }}>
+              <svg width="62" height="62" viewBox="0 0 24 24" fill="var(--deep)" style={{ marginLeft: 8 }}><path d="M7 4.5v15l12-7.5z" /></svg>
+            </span>
+            <span className="serif" style={{ fontSize: 46 }}>Ver el reel</span>
+            <span style={{ fontSize: 22, color: 'rgba(255,255,255,.6)' }}>Se abre en Instagram</span>
+          </a>
+        </R>
+      </div>
     </div>
   )
 }

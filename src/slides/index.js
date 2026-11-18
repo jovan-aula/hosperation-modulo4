@@ -4,7 +4,7 @@ import { LaH, FaltaPieza, NoEsFeliz, AptitudSeDemuestra, Escenarios, ObservaCond
 import { AperturaReferentes, BMCCultural, HumildadCultural, AutismFriendly, CARE, Simulacion, Debriefing, AHDMayo, CincoAprendizajes } from './s3_referentes'
 import { ActitudesObservables, AptitudesTransversales, ComunicacionClara, EscuchaActiva, CerrarCircuito, EstandarPorPuesto, RecuperacionServicio } from './s4_florence'
 import { SimulacionInstrucciones, TresCasos, DebriefPractica } from './s5_practica'
-import { Organizacion, Medir, Compromiso, Cierre, Referencias } from './s6_cierre'
+import { Organizacion, Medir, ReelReflexion, Compromiso, Cierre, Referencias } from './s6_cierre'
 
 const A = 'Apertura'
 const B1 = 'Bloque 1 · Los tres elementos'
@@ -57,6 +57,7 @@ export default [
   // ── CIERRE ───────────────────────────
   { C: Organizacion, section: C },
   { C: Medir, section: C },
+  { C: ReelReflexion, section: C, tone: 'dark', interactive: true },
   { C: Compromiso, section: C, tone: 'dark' },
   { C: Cierre, section: C, tone: 'dark', chrome: false },
   { C: Referencias, section: C },
