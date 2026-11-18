@@ -1,15 +1,32 @@
 {
+  "installCommand": "rm -rf node_modules && npm ci",
   "redirects": [
-    { "source": "/", "destination": "/modulo-5/", "permanent": false },
-    { "source": "/modulo-5", "destination": "/modulo-5/", "permanent": false }
+    {
+      "source": "/",
+      "destination": "/modulo-5/",
+      "permanent": false
+    },
+    {
+      "source": "/modulo-5",
+      "destination": "/modulo-5/",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/modulo-5/(.*)", "destination": "/$1" }
+    {
+      "source": "/modulo-5/(.*)",
+      "destination": "/$1"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
     }
   ]
 }
