@@ -1,4 +1,4 @@
-import { R, Label, Bar, Photo, Logo, QR } from '../components/ui'
+import { R, Label, Bar, Photo, Logo, QR, asset } from '../components/ui'
 
 export function Portada() {
   return (
@@ -57,7 +57,7 @@ export function Pregunta() {
 export function LluviaDisplay() {
   return (
     <div className="slide deep" style={{ padding: 0 }}>
-      <iframe src="/lluvia-display.html" title="Respuestas en vivo" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
+      <iframe src={asset('/lluvia-display.html')} title="Respuestas en vivo" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
     </div>
   )
 }

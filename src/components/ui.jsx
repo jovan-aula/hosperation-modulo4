@@ -1,5 +1,9 @@
 // Piezas compartidas de la presentación
 
+// Carpeta donde vive la presentación en el dominio (ej. /modulo-5/). Las rutas '/img/…' se resuelven contra ella.
+export const BASE = import.meta.env.BASE_URL
+export const asset = (p) => (p.startsWith('/') ? BASE + p.slice(1) : p)
+
 // Envuelve un elemento para que entre en orden (i = posición en la secuencia)
 export const R = ({ i = 0, as: Tag = 'div', className = '', style, children, ...rest }) => (
   <Tag className={`rise ${className}`} style={{ '--i': i, ...style }} {...rest}>{children}</Tag>
@@ -12,14 +16,14 @@ export const Bar = ({ i = 1 }) => <div className="bar grow-x" style={{ '--i': i 
 // Foto a sangre con velo de color de marca
 export const Photo = ({ src, veil, pos = 'center', kb = true }) => (
   <>
-    <div className={`photo ${kb ? 'kb' : ''}`} style={{ backgroundImage: `url(${src})`, backgroundPosition: pos }} />
+    <div className={`photo ${kb ? 'kb' : ''}`} style={{ backgroundImage: `url(${asset(src)})`, backgroundPosition: pos }} />
     {veil && <div className="veil" style={{ background: veil }} />}
   </>
 )
 
 // Logo de la esquina
 export const Logo = ({ dark = true, h = 64, style }) => (
-  <img src={dark ? '/img/aula-hosperation-blanco.png' : '/img/aula-hosperation-navy.png'} alt="Aula · Hosperation" style={{ height: h, width: 'auto', ...style }} />
+  <img src={asset(dark ? '/img/aula-hosperation-blanco.png' : '/img/aula-hosperation-navy.png')} alt="Aula · Hosperation" style={{ height: h, width: 'auto', ...style }} />
 )
 
 /*
@@ -48,7 +52,7 @@ export function HMark({ size = 560, show = ['a', 'b', 'c'], dark = true, broken 
 
 // Código QR que apunta al dominio donde esté publicada la presentación
 export const QR = ({ path, size = 300 }) => {
-  const url = `${window.location.origin}${path}`
+  const url = `${window.location.origin}${asset(path)}`
   const src = `https://api.qrserver.com/v1/create-qr-code/?size=${size * 2}x${size * 2}&margin=0&color=0C2D4E&bgcolor=FFFFFF&data=${encodeURIComponent(url)}`
   return (
     <div style={{ background: '#fff', padding: 28, borderRadius: 28, display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 18, boxShadow: '0 30px 80px -30px rgba(0,0,0,.6)' }}>
